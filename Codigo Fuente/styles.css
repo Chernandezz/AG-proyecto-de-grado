@@ -1,0 +1,110 @@
+* {
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  text-decoration: none;
+  outline: none;
+  border: none;
+  text-transform: capitalize;
+  -webkit-transition: all 0.2s linear;
+  transition: all 0.2s linear;
+}
+
+html {
+  font-size: 62.5%;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  scroll-padding-top: 7rem;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  padding: 20px;
+}
+
+.container {
+  background-color: #ffffff;
+  border-radius: 5px;
+  padding: 20px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.titulo {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 2rem;
+}
+
+.formulario {
+  display: grid;
+  gap: 10px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-label {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.form-input,
+.form-select {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-size: 1.5rem;
+}
+
+.form-checkbox {
+  width: 20px;
+  height: 20px;
+}
+
+.submit-btn {
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  border-radius: 3px;
+  padding: 10px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.submit-btn:hover {
+  background-color: #0056b3;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Resultados */
+.resultados {
+  margin-top: 20px;
+}
+
+.tabla-resultados {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabla-resultados th,
+.tabla-resultados td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
+
+.tabla-resultados th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}

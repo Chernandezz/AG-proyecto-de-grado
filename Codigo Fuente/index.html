@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Algoritmo Genético</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/10.1.0/math.min.js"></script>
+
+</head>
+
+<body>
+  <section class="container" id="formularioInicial">
+    <h1 class="titulo">Algoritmo Genético</h1>
+    <form id="formulario" class="formulario">
+      <div class="form-group">
+        <label for="funcion_objetivo" class="form-label">Función objetivo:</label>
+        <input type="text" id="funcion_objetivo" class="form-input" placeholder="Ejemplo: X1^2 + X2*6 - (X3*9)">
+      </div>
+
+
+
+      <div class="form-group">
+        <label for="tipo_seleccion" class="form-label">Tipo de selección:</label>
+        <select id="tipo_seleccion" class="form-select">
+          <option value="ruleta">Ruleta</option>
+          <option value="torneo">Torneo</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="tamano_poblacion" class="form-label">Tamaño de la población:</label>
+        <input type="number" id="tamano_poblacion" min="1" step="1" value="50" class="form-input">
+      </div>
+
+      <div class="form-group">
+        <label for="tipo_cruce" class="form-label">Tipo de cruce:</label>
+        <select id="tipo_cruce" class="form-select">
+          <option value="un_punto">Un punto</option>
+          <option value="dos_puntos">Dos puntos</option>
+          <option value="uniforme">Uniforme</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="tipo_mutacion" class="form-label">Tipo de mutación:</label>
+        <select id="tipo_mutacion" class="form-select">
+          <option value="bit_flip">Bit flip</option>
+          <option value="intercambio">Intercambio</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="probabilidad_cruce" class="form-label">Probabilidad de cruce:</label>
+        <input type="number" id="probabilidad_cruce" min="0" max="1" step="0.01" value="0.8" class="form-input">
+      </div>
+
+      <div class="form-group">
+        <label for="probabilidad_mutacion" class="form-label">Probabilidad de mutación:</label>
+        <input type="number" id="probabilidad_mutacion" min="0" max="1" step="0.01" value="0.1" class="form-input">
+      </div>
+
+      <div class="form-group">
+        <label for="num_iteraciones" class="form-label">Número de iteraciones:</label>
+        <input type="number" id="num_iteraciones" min="1" step="1" value="100" class="form-input">
+      </div>
+
+      <div class="form-group">
+        <label for="xmin" class="form-label">Xmin:</label>
+        <input type="number" id="xmin" min="0" step="0.01" value="0" class="form-input">
+      </div>
+
+      <div class="form-group">
+        <label for="xmax" class="form-label">Xmax:</label>
+        <input type="number" id="xmax" min="0" step="0.01" value="10" class="form-input">
+      </div>
+
+
+
+      <div class="form-group">
+        <label for="elitismo" class="form-label">Elitismo:</label>
+        <input type="checkbox" id="elitismo" class="form-checkbox">
+      </div>
+
+      <button type="submit" class="submit-btn">Ejecutar algoritmo genético</button>
+    </form>
+  </section>
+  <section id="resultados" class="container hidden">
+    <div id="respuesta" class="resultados"></div>
+    <button id="nuevoAlgoritmo" class="submit-btn" style="background-color: red !important;">Ejecutar Nuevo
+      Algoritmo</button>
+  </section>
+
+  <script src="main.js"></script>
+</body>
+
+</html>
