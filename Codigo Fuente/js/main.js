@@ -37,7 +37,7 @@ function ejecutarAlgoritmoGenetico() {
 
   // Se trae la funcion objetivo ya normalizada
   algoritmoGenetico(
-    expresionFuncionObjetivo,
+    expresionFuncionObjetivo.toLowerCase(),
     tipoSeleccion,
     tamanoPoblacion,
     tipoCruce,
