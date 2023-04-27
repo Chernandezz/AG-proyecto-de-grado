@@ -13,7 +13,9 @@ class AlgoritmoGenetico {
     elitismo,
     decimales,
   }) {
-    this.expresionFuncionObjetivo = expresionFuncionObjetivo;
+    this.expresionFuncionObjetivo = crearFuncionObjetivo(
+      expresionFuncionObjetivo
+    );
     this.tipoSeleccion = tipoSeleccion;
     this.tamanoPoblacion = tamanoPoblacion;
     this.tipoCruce = tipoCruce;
@@ -25,7 +27,7 @@ class AlgoritmoGenetico {
     this.xmax = xmax;
     this.n = decimales;
     this.Lind = Math.ceil(
-      Math.log2((this.xmax - this.xmin) * Math.pow(10, this.n) + 1)
+      Math.log2(1 + (this.xmax - this.xmin) * Math.pow(10, this.n))
     );
     this.elitismo = elitismo;
 
@@ -35,6 +37,7 @@ class AlgoritmoGenetico {
   // Implementar el resto de las funciones aquí.
   generarPoblacionInicial() {
     const poblacionInicial = [];
+    let fxTotal = 0;
 
     for (let i = 0; i < this.tamanoPoblacion; i++) {
       const individuo = {};
@@ -44,6 +47,22 @@ class AlgoritmoGenetico {
         cromosoma.push(Math.random() < 0.5 ? 0 : 1);
       }
       individuo[`cromosoma`] = cromosoma;
+      individuo["binario"] = cromosoma.join("");
+
+      // Calcular los valores de xi
+      const xiValues = {};
+      for (let j = 1; j <= this.Lind; j++) {
+        const xi =
+          this.xmin +
+          (parseInt(individuo["binario"], 2) * (this.xmax - this.xmin)) /
+            (Math.pow(2, this.Lind) - 1);
+        xiValues[`x${j}`] = xi;
+      }
+
+      // Calcular el valor de fitness usando los valores de xi
+      individuo["fitness"] = this.expresionFuncionObjetivo(xiValues);
+
+      fxTotal += individuo["fitness"];
 
       poblacionInicial.push(individuo);
     }
@@ -55,12 +74,7 @@ class AlgoritmoGenetico {
 function crearFuncionObjetivo(expresion) {
   const mathExpression = math.compile(expresion);
 
-  return function (cromosoma) {
-    const variables = cromosoma.reduce((obj, gen, idx) => {
-      obj["x" + (idx + 1)] = gen;
-      return obj;
-    }, {});
-
+  return function (variables) {
     return mathExpression.evaluate(variables);
   };
 }
@@ -97,16 +111,4 @@ export function algoritmoGenetico(
   });
 
   console.log(algoritmo);
-
-  // const resultados = algoritmo.ejecutar(funcionObjetivo);
-
-  // // Conexiones con el DOM ==================
-  // document.getElementById("resultados").innerHTML = `
-  //   <h2>Resultados</h2>
-  //   <p>Mejor individuo: ${resultados.mejorIndividuo}</p>
-  //   <p>Valor de la función objetivo: ${resultados.mejorValor}</p>
-  //   <p>Iteraciones: ${resultados.iteraciones}</p>
-  //   <p>Tiempo: ${resultados.tiempo} ms</p>
-  // `;
-  // Fin conexiones con el DOM ==============
 }
