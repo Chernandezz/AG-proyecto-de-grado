@@ -5,8 +5,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Algoritmo Genético</title>
-  <link rel="stylesheet" href="styles.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/10.1.0/math.min.js"></script>
+  <link rel="stylesheet" href="./css/styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.js"
+    integrity="sha512-VW8/i4IZkHxdD8OlqNdF7fGn3ba0+lYqag+Uy4cG6BtJ/LIr8t23s/vls70pQ41UasHH0tL57GQfKDApqc9izA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 
 </head>
 
@@ -16,12 +19,11 @@
     <form id="formulario" class="formulario">
       <div class="form-group">
         <label for="funcion_objetivo" class="form-label">Función objetivo:</label>
-        <input type="text" id="funcion_objetivo" class="form-input" placeholder="Ejemplo: X1^2 + X2*6 - (X3*9)">
+        <input type="text" id="funcion_objetivo" class="form-input" placeholder="Ejemplo: X1^2 - 3X2 + 2"
+          value="X1^2 - 3X2 + 2">
       </div>
 
-
-
-      <div class="form-group">
+      <div class=" form-group">
         <label for="tipo_seleccion" class="form-label">Tipo de selección:</label>
         <select id="tipo_seleccion" class="form-select">
           <option value="ruleta">Ruleta</option>
@@ -62,6 +64,16 @@
       </div>
 
       <div class="form-group">
+        <label for="decimales" class="form-label">Decimales:</label>
+        <input type="number" id="decimales" min="0" class="form-input" value="2">
+      </div>
+
+      <div class="form-group">
+        <label for="elitismo" class="form-label">Elitismo:</label>
+        <input type="checkbox" id="elitismo" class="form-checkbox">
+      </div>
+
+      <div class="form-group">
         <label for="num_iteraciones" class="form-label">Número de iteraciones:</label>
         <input type="number" id="num_iteraciones" min="1" step="1" value="100" class="form-input">
       </div>
@@ -77,12 +89,6 @@
       </div>
 
 
-
-      <div class="form-group">
-        <label for="elitismo" class="form-label">Elitismo:</label>
-        <input type="checkbox" id="elitismo" class="form-checkbox">
-      </div>
-
       <button type="submit" class="submit-btn">Ejecutar algoritmo genético</button>
     </form>
   </section>
@@ -92,7 +98,7 @@
       Algoritmo</button>
   </section>
 
-  <script src="main.js"></script>
+  <script type="module" src="./js/main.js"></script>
 </body>
 
 </html>
