@@ -50,21 +50,29 @@ class AlgoritmoGenetico {
       individuo["binario"] = cromosoma.join("");
 
       // Calcular los valores de xi
-      const xiValues = {};
-      for (let j = 1; j <= this.Lind; j++) {
-        const xi =
-          this.xmin +
-          (parseInt(individuo["binario"], 2) * (this.xmax - this.xmin)) /
-            (Math.pow(2, this.Lind) - 1);
-        xiValues[`x${j}`] = xi;
-      }
 
+      const xi =
+        this.xmin +
+        (parseInt(individuo["binario"], 2) * (this.xmax - this.xmin)) /
+          (Math.pow(2, this.Lind) - 1);
+      console.log(xi);
       // Calcular el valor de fitness usando los valores de xi
-      individuo["fitness"] = this.expresionFuncionObjetivo(xiValues);
+      individuo["fitness"] = this.expresionFuncionObjetivo({ x: xi });
 
       fxTotal += individuo["fitness"];
 
       poblacionInicial.push(individuo);
+    }
+
+    let probabilidadAcumulada = 0;
+    // Calcular la probabilidad de cada individuo
+    for (let i = 0; i < this.tamanoPoblacion; i++) {
+      poblacionInicial[i]["probabilidad"] =
+        poblacionInicial[i]["fitness"] / fxTotal;
+      // Calcular la probabilidad acumulada de cada individuo
+      poblacionInicial[i]["probabilidadAcumulada"] =
+        probabilidadAcumulada + poblacionInicial[i]["probabilidad"];
+      probabilidadAcumulada = poblacionInicial[i]["probabilidadAcumulada"];
     }
 
     return poblacionInicial;
