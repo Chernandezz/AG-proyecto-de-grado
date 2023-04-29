@@ -55,7 +55,6 @@ class AlgoritmoGenetico {
         this.xmin +
         (parseInt(individuo["binario"], 2) * (this.xmax - this.xmin)) /
           (Math.pow(2, this.Lind) - 1);
-      console.log(xi);
       // Calcular el valor de fitness usando los valores de xi
       individuo["fitness"] = this.expresionFuncionObjetivo({ x: xi });
 
@@ -76,6 +75,34 @@ class AlgoritmoGenetico {
     }
 
     return poblacionInicial;
+  }
+
+  seleccionarPadre() {
+    let padre = null;
+    switch (this.tipoSeleccion) {
+      case "ruleta":
+        padre = this.seleccionarPadreRuleta();
+        break;
+      case "universal":
+        padre = this.seleccionarPadreUniversal();
+        break;
+      case "torneo":
+        padre = this.seleccionarPadreTorneo();
+        break;
+      case "ranking":
+        padre = this.seleccionarPadreRanking();
+        break;
+      case "restos":
+        padre = this.seleccionarPadreRestos();
+        break;
+      case "estocastico":
+        padre = this.seleccionarPadreEstocastico();
+        break;
+      default:
+        padre = this.seleccionarPadreRuleta();
+        break;
+    }
+    return padre;
   }
 }
 
@@ -118,5 +145,32 @@ export function algoritmoGenetico(
     decimales,
   });
 
-  console.log(algoritmo);
+  for (let i = 0; i < algoritmo.numIteraciones; i++) {
+    algoritmo.poblacion = algoritmo.poblacion.sort((a, b) => {
+      return b["fitness"] - a["fitness"];
+    });
+
+    const nuevaPoblacion = [];
+
+    let cantidadHijos = algoritmo.tamanoPoblacion;
+    if (algoritmo.elitismo) {
+      nuevaPoblacion.push(algoritmo.poblacion[0]);
+      cantidadHijos--;
+    }
+
+    // Ciclo para llenar la nueva tabla
+    for (let j = 0; j < cantidadHijos; j++) {
+      const padre = algoritmo.seleccionarPadre();
+      const madre = algoritmo.seleccionarMadre();
+
+      const hijo = algoritmo.cruzar(padre, madre);
+      const hijoMutado = algoritmo.mutar(hijo);
+
+      nuevaPoblacion.push(hijoMutado);
+    }
+
+    algoritmo.poblacion = nuevaPoblacion;
+  }
 }
+
+
