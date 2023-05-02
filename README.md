@@ -33,12 +33,19 @@ Este proyecto es una implementación completa de un algoritmo genético desplega
 El proyecto consta de los siguientes archivos y directorios:
 
 .
+
 ├── css
+
 │ └── styles.css
+
 ├── js
+
 │ ├── algoritmoGenetico.js
+
 │ └── main.js
+
 ├── index.html
+
 └── README.md
 
 
@@ -84,7 +91,6 @@ Si tiene alguna pregunta, comentario o sugerencia, no dude en ponerse en contact
 
 - Nombre: Cristian Felipe Hernández Zuluaga
 - Correo electrónico: cristianfhz@example.com
-- LinkedIn: [linkedin.com/in
 
 
 
