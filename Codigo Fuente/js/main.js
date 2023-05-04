@@ -1,9 +1,10 @@
 import { algoritmoGenetico } from "./algoritmoGenetico.js";
 
-document.getElementById("formulario").addEventListener("submit", (e) => {
-  e.preventDefault();
-  ejecutarAlgoritmoGenetico();
-});
+document
+  .getElementById("btnEjecutarAlgoritmo")
+  .addEventListener("click", () => {
+    ejecutarAlgoritmoGenetico();
+  });
 
 document.getElementById("nuevoAlgoritmo").addEventListener("click", () => {
   document.getElementById("resultados").classList.add("hidden");
