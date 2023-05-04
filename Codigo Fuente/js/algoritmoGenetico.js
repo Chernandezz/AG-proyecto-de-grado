@@ -80,7 +80,10 @@ class AlgoritmoGenetico {
     let padre = null;
     switch (this.tipoSeleccion) {
       case "ruleta":
-        this.normalizarPoblacion();
+        // mostrarPoblacion(this.poblacion);
+        if (this.seDebeNormalizar()) this.normalizarPoblacion();
+        console.log(this.poblacion);
+        // mostrarPoblacion(this.poblacion);
         padre = this.seleccionarPadreRuleta();
         break;
       case "universal":
@@ -105,29 +108,35 @@ class AlgoritmoGenetico {
     return padre;
   }
 
+  seDebeNormalizar() {
+    const minFitness = Math.min(
+      ...this.poblacion.map((individuo) => individuo.fitness)
+    );
+    return minFitness < 0 ? true : false;
+  }
+
   normalizarPoblacion() {
     // Encontrar el menor fitness de la población
     const minFitness = Math.min(
       ...this.poblacion.map((individuo) => individuo.fitness)
     );
 
-    // Sumar el menor fitness a todos los fitness de los cromosomas de la población
+    // Calcular el valor de fx para cada individuo
     this.poblacion = this.poblacion.map((individuo) => {
-      individuo.fitness -= minFitness * 2;
+      individuo.fx = individuo.fitness - minFitness * 2;
       return individuo;
     });
 
-    // Calcular la suma de los fitness modificados
+    // Calcular la suma de los fx
     const fxTotal = this.poblacion.reduce(
-      (total, individuo) => total + individuo.fitness,
+      (total, individuo) => total + individuo.fx,
       0
     );
 
     let probabilidadAcumulada = 0;
     // Calcular la probabilidad de cada individuo
     for (let i = 0; i < this.tamanoPoblacion; i++) {
-      this.poblacion[i]["probabilidad"] =
-        this.poblacion[i]["fitness"] / fxTotal;
+      this.poblacion[i]["probabilidad"] = this.poblacion[i]["fx"] / fxTotal;
       // Calcular la probabilidad acumulada de cada individuo
       this.poblacion[i]["probabilidadAcumulada"] =
         probabilidadAcumulada + this.poblacion[i]["probabilidad"];
@@ -143,6 +152,7 @@ function mostrarPoblacion(poblacion) {
       `Individuo ${index + 1}: \n` +
         `Cromosoma: ${individuo.cromosoma.join("")}\n` +
         `Fitness: ${individuo.fitness.toFixed(4)}\n` +
+        `Fx: ${individuo.fx}\n` +
         `Probabilidad: ${(individuo.probabilidad * 100).toFixed(2)}%\n` +
         `Probabilidad acumulada: ${(
           individuo.probabilidadAcumulada * 100
