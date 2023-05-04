@@ -1,3 +1,6 @@
+# Link Proyecto Desplegado
+- https://algortimogeneticocristianhernandez.netlify.app/
+
 # Algoritmo Genético en la Web
 
 Este proyecto es una implementación completa de un algoritmo genético desplegado en la web con tecnologías como HTML, JavaScript y CSS. La aplicación es completamente responsive y tiene una interfaz amigable. Fue desarrollado por Cristian Felipe Hernández Zuluaga, administrador de sistemas informáticos.
