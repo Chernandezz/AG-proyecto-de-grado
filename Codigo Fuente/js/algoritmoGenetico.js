@@ -151,6 +151,7 @@ class AlgoritmoGenetico {
     }
   }
 
+  // Inicio Seccion de Cruces
   cruzar(padre1, padre2) {
     switch (this.tipoCruce) {
       case "unPunto":
@@ -164,7 +165,66 @@ class AlgoritmoGenetico {
     }
   }
 
-  cruzarUnPunto(padre1, padre2) {}
+  cruzarUnPunto(padre1, padre2) {
+    const puntoCruce = Math.floor(Math.random() * this.Lind);
+    const hijo = {
+      cromosoma: [],
+    };
+
+    for (let i = 0; i < this.Lind; i++) {
+      if (i < puntoCruce) {
+        hijo.cromosoma.push(padre1.cromosoma[i]);
+      } else {
+        hijo.cromosoma.push(padre2.cromosoma[i]);
+      }
+    }
+
+    return hijo;
+  }
+
+  cruzarDosPuntos(padre1, padre2) {
+    let puntoCruce1 = Math.floor(Math.random() * this.Lind);
+    let puntoCruce2 = Math.floor(Math.random() * this.Lind);
+
+    while (puntoCruce1 === puntoCruce2) {
+      puntoCruce2 = Math.floor(Math.random() * this.Lind);
+    }
+
+    if (puntoCruce1 > puntoCruce2) {
+      [puntoCruce1, puntoCruce2] = [puntoCruce2, puntoCruce1];
+    }
+
+    const hijo = {
+      cromosoma: [],
+    };
+
+    for (let i = 0; i < this.Lind; i++) {
+      if (i < puntoCruce1 || i > puntoCruce2) {
+        hijo.cromosoma.push(padre1.cromosoma[i]);
+      } else {
+        hijo.cromosoma.push(padre2.cromosoma[i]);
+      }
+    }
+
+    return hijo;
+  }
+
+  cruzarUniforme(padre1, padre2) {
+    const hijo = {
+      cromosoma: [],
+    };
+
+    for (let i = 0; i < this.Lind; i++) {
+      if (Math.random() < 0.5) {
+        hijo.cromosoma.push(padre1.cromosoma[i]);
+      } else {
+        hijo.cromosoma.push(padre2.cromosoma[i]);
+      }
+    }
+
+    return hijo;
+  }
+  // Fin Seccion de Cruces
 }
 
 function mostrarPoblacion(poblacion) {
