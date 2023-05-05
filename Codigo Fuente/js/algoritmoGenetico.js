@@ -150,6 +150,21 @@ class AlgoritmoGenetico {
       probabilidadAcumulada = this.poblacion[i]["probabilidadAcumulada"];
     }
   }
+
+  cruzar(padre1, padre2) {
+    switch (this.tipoCruce) {
+      case "unPunto":
+        return this.cruzarUnPunto(padre1, padre2);
+      case "dosPuntos":
+        return this.cruzarDosPuntos(padre1, padre2);
+      case "uniforme":
+        return this.cruzarUniforme(padre1, padre2);
+      default:
+        return this.cruzarUnPunto(padre1, padre2);
+    }
+  }
+
+  cruzarUnPunto(padre1, padre2) {}
 }
 
 function mostrarPoblacion(poblacion) {
