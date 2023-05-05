@@ -80,9 +80,7 @@ class AlgoritmoGenetico {
     let padre = null;
     switch (this.tipoSeleccion) {
       case "ruleta":
-        // mostrarPoblacion(this.poblacion);
         if (this.seDebeNormalizar()) this.normalizarPoblacion();
-        // mostrarPoblacion(this.poblacion);
         padre = this.seleccionarPadreRuleta();
         break;
       case "universal":
@@ -105,6 +103,16 @@ class AlgoritmoGenetico {
         break;
     }
     return padre;
+  }
+
+  seleccionarPadreRuleta() {
+    const r = Math.random();
+    for (const individuo of this.poblacion) {
+      if (r <= individuo.probabilidadAcumulada) {
+        return individuo;
+      }
+    }
+    return this.poblacion[this.tamanoPoblacion - 1];
   }
 
   seDebeNormalizar() {
@@ -210,10 +218,9 @@ export function algoritmoGenetico(
 
   // Ciclo para llenar la nueva tabla
   for (let j = 0; j < cantidadHijos; j++) {
-    const padre = algoritmo.seleccionarPadre();
-    const madre = algoritmo.seleccionarMadre();
-
-    const hijo = algoritmo.cruzar(padre, madre);
+    const padre1 = algoritmo.seleccionarPadre();
+    const padre2 = algoritmo.seleccionarPadre();
+    const hijo = algoritmo.cruzar(padre1, padre2);
     const hijoMutado = algoritmo.mutar(hijo);
 
     nuevaPoblacion.push(hijoMutado);
