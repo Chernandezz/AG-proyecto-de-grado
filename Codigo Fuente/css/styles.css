@@ -342,7 +342,7 @@ body {
 
 .container {
   padding: 4rem;
-  background-color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.911);
   border-radius: 5px;
   max-width: 90rem;
   margin: 0 auto;
@@ -394,7 +394,7 @@ body {
   width: 15rem;
   text-align: center;
   border-bottom: 1px solid #ccc;
-  background-color: #ffffff;
+  background-color: transparent;
 }
 
 .form-input:focus,
@@ -408,10 +408,11 @@ body {
 }
 
 .submit-btn {
-  background-color: #2bdb0c;
+  background-color: rgba(43, 219, 12, 0.8235294118);
   color: #ffffff;
   border: none;
-  font-size: 1.5rem;
+  font-size: 2rem;
+  letter-spacing: 0.1rem;
   cursor: pointer;
   margin-top: 10px;
   padding: 12px 40px;
@@ -419,7 +420,8 @@ body {
 }
 
 .submit-btn:hover {
-  background-color: #16af35;
+  background-color: #2bdb0c;
+  transform: scale(1.05);
 }
 
 .hidden {

@@ -82,7 +82,6 @@ class AlgoritmoGenetico {
       case "ruleta":
         // mostrarPoblacion(this.poblacion);
         if (this.seDebeNormalizar()) this.normalizarPoblacion();
-        console.log(this.poblacion);
         // mostrarPoblacion(this.poblacion);
         padre = this.seleccionarPadreRuleta();
         break;
