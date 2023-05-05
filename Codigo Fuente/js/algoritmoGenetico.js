@@ -153,33 +153,52 @@ class AlgoritmoGenetico {
 
   // Inicio Seccion de Cruces
   cruzar(padre1, padre2) {
+    let hijos;
     switch (this.tipoCruce) {
       case "unPunto":
-        return this.cruzarUnPunto(padre1, padre2);
+        hijos = this.cruzarUnPunto(padre1, padre2);
+        break;
       case "dosPuntos":
-        return this.cruzarDosPuntos(padre1, padre2);
+        hijos = this.cruzarDosPuntos(padre1, padre2);
+        break;
       case "uniforme":
-        return this.cruzarUniforme(padre1, padre2);
+        hijos = this.cruzarUniforme(padre1, padre2);
+        break;
       default:
-        return this.cruzarUnPunto(padre1, padre2);
+        hijos = this.cruzarUnPunto(padre1, padre2);
+        break;
     }
+    return hijos;
   }
 
   cruzarUnPunto(padre1, padre2) {
     const puntoCruce = Math.floor(Math.random() * this.Lind);
-    const hijo = {
+    console.log(
+      "🚀 ~ file: algoritmoGenetico.js:176 ~ AlgoritmoGenetico ~ cruzarUnPunto ~ puntoCruce:",
+      puntoCruce
+    );
+    const hijo1 = {
+      cromosoma: [],
+    };
+    const hijo2 = {
       cromosoma: [],
     };
 
-    for (let i = 0; i < this.Lind; i++) {
-      if (i < puntoCruce) {
-        hijo.cromosoma.push(padre1.cromosoma[i]);
-      } else {
-        hijo.cromosoma.push(padre2.cromosoma[i]);
-      }
-    }
+    hijo1.cromosoma = hijo1.cromosoma.concat(
+      padre1.cromosoma.slice(0, puntoCruce)
+    );
+    hijo1.cromosoma = hijo1.cromosoma.concat(
+      padre2.cromosoma.slice(puntoCruce)
+    );
 
-    return hijo;
+    hijo2.cromosoma = hijo2.cromosoma.concat(
+      padre2.cromosoma.slice(0, puntoCruce)
+    );
+    hijo2.cromosoma = hijo2.cromosoma.concat(
+      padre1.cromosoma.slice(puntoCruce)
+    );
+
+    return [hijo1, hijo2];
   }
 
   cruzarDosPuntos(padre1, padre2) {
@@ -194,36 +213,47 @@ class AlgoritmoGenetico {
       [puntoCruce1, puntoCruce2] = [puntoCruce2, puntoCruce1];
     }
 
-    const hijo = {
+    const hijo1 = {
+      cromosoma: [],
+    };
+    const hijo2 = {
       cromosoma: [],
     };
 
     for (let i = 0; i < this.Lind; i++) {
       if (i < puntoCruce1 || i > puntoCruce2) {
-        hijo.cromosoma.push(padre1.cromosoma[i]);
+        hijo1.cromosoma.push(padre1.cromosoma[i]);
+        hijo2.cromosoma.push(padre2.cromosoma[i]);
       } else {
-        hijo.cromosoma.push(padre2.cromosoma[i]);
+        hijo1.cromosoma.push(padre2.cromosoma[i]);
+        hijo2.cromosoma.push(padre1.cromosoma[i]);
       }
     }
 
-    return hijo;
+    return [hijo1, hijo2];
   }
 
   cruzarUniforme(padre1, padre2) {
-    const hijo = {
+    const hijo1 = {
+      cromosoma: [],
+    };
+    const hijo2 = {
       cromosoma: [],
     };
 
     for (let i = 0; i < this.Lind; i++) {
       if (Math.random() < 0.5) {
-        hijo.cromosoma.push(padre1.cromosoma[i]);
+        hijo1.cromosoma.push(padre1.cromosoma[i]);
+        hijo2.cromosoma.push(padre2.cromosoma[i]);
       } else {
-        hijo.cromosoma.push(padre2.cromosoma[i]);
+        hijo1.cromosoma.push(padre2.cromosoma[i]);
+        hijo2.cromosoma.push(padre1.cromosoma[i]);
       }
     }
 
-    return hijo;
+    return [hijo1, hijo2];
   }
+
   // Fin Seccion de Cruces
 }
 
@@ -294,8 +324,13 @@ export function algoritmoGenetico(
   // Ciclo para llenar la nueva tabla
   for (let j = 0; j < cantidadHijos; j++) {
     const padre1 = algoritmo.seleccionarPadre();
+    console.log("🚀 ~ file: algoritmoGenetico.js:319 ~ padre1:", padre1);
     const padre2 = algoritmo.seleccionarPadre();
-    const hijo = algoritmo.cruzar(padre1, padre2);
+    console.log("🚀 ~ file: algoritmoGenetico.js:321 ~ padre2:", padre2);
+    const [hijo1, hijo2] = algoritmo.cruzar(padre1, padre2);
+    console.log("🚀 ~ file: algoritmoGenetico.js:321 ~ hijo1:", hijo1);
+    console.log("🚀 ~ file: algoritmoGenetico.js:321 ~ hijo2:", hijo2);
+
     const hijoMutado = algoritmo.mutar(hijo);
 
     nuevaPoblacion.push(hijoMutado);
