@@ -173,10 +173,6 @@ class AlgoritmoGenetico {
 
   cruzarUnPunto(padre1, padre2) {
     const puntoCruce = Math.floor(Math.random() * this.Lind);
-    console.log(
-      "🚀 ~ file: algoritmoGenetico.js:176 ~ AlgoritmoGenetico ~ cruzarUnPunto ~ puntoCruce:",
-      puntoCruce
-    );
     const hijo1 = {
       cromosoma: [],
     };
@@ -201,60 +197,137 @@ class AlgoritmoGenetico {
     return [hijo1, hijo2];
   }
 
-  cruzarDosPuntos(padre1, padre2) {
-    let puntoCruce1 = Math.floor(Math.random() * this.Lind);
-    let puntoCruce2 = Math.floor(Math.random() * this.Lind);
+  // cruzarDosPuntos(padre1, padre2) {
+  //   let puntoCruce1 = Math.floor(Math.random() * this.Lind);
+  //   let puntoCruce2 = Math.floor(Math.random() * this.Lind);
 
-    while (puntoCruce1 === puntoCruce2) {
-      puntoCruce2 = Math.floor(Math.random() * this.Lind);
-    }
+  //   while (puntoCruce1 === puntoCruce2) {
+  //     puntoCruce2 = Math.floor(Math.random() * this.Lind);
+  //   }
 
-    if (puntoCruce1 > puntoCruce2) {
-      [puntoCruce1, puntoCruce2] = [puntoCruce2, puntoCruce1];
-    }
+  //   if (puntoCruce1 > puntoCruce2) {
+  //     [puntoCruce1, puntoCruce2] = [puntoCruce2, puntoCruce1];
+  //   }
 
-    const hijo1 = {
-      cromosoma: [],
-    };
-    const hijo2 = {
-      cromosoma: [],
-    };
+  //   const hijo1 = {
+  //     cromosoma: [],
+  //   };
+  //   const hijo2 = {
+  //     cromosoma: [],
+  //   };
 
-    for (let i = 0; i < this.Lind; i++) {
-      if (i < puntoCruce1 || i > puntoCruce2) {
-        hijo1.cromosoma.push(padre1.cromosoma[i]);
-        hijo2.cromosoma.push(padre2.cromosoma[i]);
-      } else {
-        hijo1.cromosoma.push(padre2.cromosoma[i]);
-        hijo2.cromosoma.push(padre1.cromosoma[i]);
-      }
-    }
+  //   for (let i = 0; i < this.Lind; i++) {
+  //     if (i < puntoCruce1 || i > puntoCruce2) {
+  //       hijo1.cromosoma.push(padre1.cromosoma[i]);
+  //       hijo2.cromosoma.push(padre2.cromosoma[i]);
+  //     } else {
+  //       hijo1.cromosoma.push(padre2.cromosoma[i]);
+  //       hijo2.cromosoma.push(padre1.cromosoma[i]);
+  //     }
+  //   }
 
-    return [hijo1, hijo2];
-  }
+  //   return [hijo1, hijo2];
+  // }
 
-  cruzarUniforme(padre1, padre2) {
-    const hijo1 = {
-      cromosoma: [],
-    };
-    const hijo2 = {
-      cromosoma: [],
-    };
+  // cruzarUniforme(padre1, padre2) {
+  //   const hijo1 = {
+  //     cromosoma: [],
+  //   };
+  //   const hijo2 = {
+  //     cromosoma: [],
+  //   };
 
-    for (let i = 0; i < this.Lind; i++) {
-      if (Math.random() < 0.5) {
-        hijo1.cromosoma.push(padre1.cromosoma[i]);
-        hijo2.cromosoma.push(padre2.cromosoma[i]);
-      } else {
-        hijo1.cromosoma.push(padre2.cromosoma[i]);
-        hijo2.cromosoma.push(padre1.cromosoma[i]);
-      }
-    }
+  //   for (let i = 0; i < this.Lind; i++) {
+  //     if (Math.random() < 0.5) {
+  //       hijo1.cromosoma.push(padre1.cromosoma[i]);
+  //       hijo2.cromosoma.push(padre2.cromosoma[i]);
+  //     } else {
+  //       hijo1.cromosoma.push(padre2.cromosoma[i]);
+  //       hijo2.cromosoma.push(padre1.cromosoma[i]);
+  //     }
+  //   }
 
-    return [hijo1, hijo2];
-  }
+  //   return [hijo1, hijo2];
+  // }
 
   // Fin Seccion de Cruces
+
+  // Inicio Seccion de Mutaciones
+  mutar(individuo) {
+    switch (this.tipoMutacion) {
+      case "bit_flip":
+        individuo = this.mutarBitflip(individuo);
+        break;
+      case "intercambio":
+        individuo = this.mutarIntercambio(individuo);
+        break;
+      default:
+        individuo = this.mutarBitflip(individuo);
+        break;
+    }
+    return individuo;
+  }
+
+  // Método de mutación bitflip
+  // Método de mutación bitflip
+  mutarBitflip(individuo) {
+    // Crear una copia del objeto individuo antes de modificarlo
+    const individuoMutado = JSON.parse(JSON.stringify(individuo));
+
+    for (let i = 0; i < this.Lind; i++) {
+      if (Math.random() < this.probabilidadMutacion) {
+        individuoMutado.cromosoma[i] =
+          individuoMutado.cromosoma[i] === 0 ? 1 : 0;
+      }
+    }
+    return individuoMutado;
+  }
+
+  // Método de mutación intercambio
+  mutarIntercambio(individuo) {
+    const pos1 = Math.floor(Math.random() * this.Lind);
+    let pos2 = Math.floor(Math.random() * this.Lind);
+
+    while (pos1 === pos2) {
+      pos2 = Math.floor(Math.random() * this.Lind);
+    }
+
+    if (Math.random() < this.probabilidadMutacion) {
+      [individuo.cromosoma[pos1], individuo.cromosoma[pos2]] = [
+        individuo.cromosoma[pos2],
+        individuo.cromosoma[pos1],
+      ];
+    }
+  }
+
+  // Fin Seccion de Mutaciones
+
+  // Actualizar la población
+  actualizarPoblacion(nuevaPoblacion) {
+    this.poblacion = nuevaPoblacion;
+    let fxTotal = 0;
+
+    for (const individuo of this.poblacion) {
+      individuo["binario"] = individuo.cromosoma.join("");
+
+      const xi =
+        this.xmin +
+        (parseInt(individuo["binario"], 2) * (this.xmax - this.xmin)) /
+          (Math.pow(2, this.Lind) - 1);
+      individuo["fitness"] = this.expresionFuncionObjetivo({ x: xi });
+
+      fxTotal += individuo["fitness"];
+    }
+
+    let probabilidadAcumulada = 0;
+    for (let i = 0; i < this.tamanoPoblacion; i++) {
+      this.poblacion[i]["probabilidad"] =
+        this.poblacion[i]["fitness"] / fxTotal;
+      this.poblacion[i]["probabilidadAcumulada"] =
+        probabilidadAcumulada + this.poblacion[i]["probabilidad"];
+      probabilidadAcumulada = this.poblacion[i]["probabilidadAcumulada"];
+    }
+  }
 }
 
 function mostrarPoblacion(poblacion) {
@@ -279,6 +352,14 @@ function crearFuncionObjetivo(expresion) {
   return function (variables) {
     return mathExpression.evaluate(variables);
   };
+}
+
+function calculoTotalFitness(poblacion) {
+  let totalFitness = 0;
+  poblacion.forEach((individuo) => {
+    totalFitness += individuo.fitness;
+  });
+  return totalFitness;
 }
 
 export function algoritmoGenetico(
@@ -324,17 +405,14 @@ export function algoritmoGenetico(
   // Ciclo para llenar la nueva tabla
   for (let j = 0; j < cantidadHijos; j++) {
     const padre1 = algoritmo.seleccionarPadre();
-    console.log("🚀 ~ file: algoritmoGenetico.js:319 ~ padre1:", padre1);
     const padre2 = algoritmo.seleccionarPadre();
-    console.log("🚀 ~ file: algoritmoGenetico.js:321 ~ padre2:", padre2);
     const [hijo1, hijo2] = algoritmo.cruzar(padre1, padre2);
-    console.log("🚀 ~ file: algoritmoGenetico.js:321 ~ hijo1:", hijo1);
-    console.log("🚀 ~ file: algoritmoGenetico.js:321 ~ hijo2:", hijo2);
-
-    const hijoMutado = algoritmo.mutar(hijo);
-
-    nuevaPoblacion.push(hijoMutado);
+    const hijo1Mutado = algoritmo.mutar(hijo1);
+    const hijo2Mutado = algoritmo.mutar(hijo2);
+    nuevaPoblacion.push(hijo1Mutado);
+    nuevaPoblacion.push(hijo2Mutado);
   }
-
-  algoritmo.poblacion = nuevaPoblacion;
+  console.log("totalFitnes Pob:", calculoTotalFitness(algoritmo.poblacion));
+  algoritmo.actualizarPoblacion(nuevaPoblacion);
+  console.log("totalFitnes Pob:", calculoTotalFitness(algoritmo.poblacion));
 }
