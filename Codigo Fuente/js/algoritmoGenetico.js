@@ -361,10 +361,16 @@ class AlgoritmoGenetico {
     return true;
   }
 
+  limitarDecimales(){
+    for (let i = 0; i < this.tamanoPoblacion; i++) {
+      this.poblacion[i].xi = this.poblacion[i].xi.toFixed(2);
+      this.poblacion[i].fitness = this.poblacion[i].fitness.toFixed(2);
+      this.poblacion[i].probabilidad = this.poblacion[i].probabilidad.toFixed(2);
+      this.poblacion[i].probabilidadAcumulada = this.poblacion[i].probabilidadAcumulada.toFixed(2);
+    }
+  }
+
   ejecutar() {
-    console.log("Primera Iteracion");
-    console.log([...this.poblacion]);
-    console.log("Fitness Total: ", this.calculoFitnessTotal());
     for (let i = 0; i < this.numIteraciones; i++) {
       const nuevaPoblacion = [];
       let cantidadHijos = this.tamanoPoblacion;
@@ -400,15 +406,9 @@ class AlgoritmoGenetico {
         }
       }
     }
-    console.log(`Ultima Iteracion ${this.numIteraciones}`);
-    console.log([...this.poblacion]);
-    console.log("Fitness Total: ", this.calculoFitnessTotal());
+    this.limitarDecimales();
+    return [...this.poblacion];
   }
-}
-
-function showObjectCopy(obj) {
-  const objCopy = JSON.parse(JSON.stringify(obj));
-  console.log(objCopy);
 }
 
 function crearFuncionObjetivo(expresion) {
@@ -459,4 +459,5 @@ export function algoritmoGenetico(
   });
 
   let algoritmoFinalizado = algoritmo.ejecutar();
+  return algoritmoFinalizado;
 }

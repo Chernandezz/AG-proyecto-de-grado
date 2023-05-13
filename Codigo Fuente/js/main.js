@@ -11,6 +11,30 @@ document.getElementById("nuevoAlgoritmo").addEventListener("click", () => {
   document.getElementById("formularioInicial").classList.remove("hidden");
 });
 
+function llenarTabla(idTabla, datos) {
+  console.log(datos);
+  const tabla = document.getElementById(idTabla);
+  tabla.innerHTML = `<tr>
+          <th>Cromosoma</th>
+          <th>Binario</th>
+          <th>Xi</th>
+          <th>Fitness</th>
+          <th>Probabilidad</th>
+          <th>Probabilidad Acumulada</th>
+        </tr>`;
+  for (let i = 0; i < datos.length; i++) {
+    let row = `<tr>
+                            <td>${datos[i].cromosoma.join()}</td>
+                            <td>${datos[i].binario}</td>
+                            <td>${datos[i].xi}</td>
+                            <td>${datos[i].fitness}</td>
+                            <td>${datos[i].probabilidad}</td>
+                            <td>${datos[i].probabilidadAcumulada}</td>
+                      </tr>`;
+    tabla.innerHTML += row;
+  }
+}
+
 function ejecutarAlgoritmoGenetico() {
   // Conexiones con el DOM ==================
   const expresionFuncionObjetivo =
@@ -19,6 +43,7 @@ function ejecutarAlgoritmoGenetico() {
   const tamanoPoblacion = parseInt(
     document.getElementById("tamano_poblacion").value
   );
+
   const convergencia = document.getElementById("convergencia").checked;
   const decimales = parseInt(document.getElementById("decimales").value);
   const tipoCruce = document.getElementById("tipo_cruce").value;
@@ -38,7 +63,7 @@ function ejecutarAlgoritmoGenetico() {
   // Fin conexiones con el DOM ==============
 
   // Se trae la funcion objetivo ya normalizada
-  algoritmoGenetico(
+  let res = algoritmoGenetico(
     expresionFuncionObjetivo.toLowerCase(),
     tipoSeleccion,
     tamanoPoblacion,
@@ -53,6 +78,9 @@ function ejecutarAlgoritmoGenetico() {
     elitismo,
     decimales
   );
+
+  // Se llena la tabla con los resultados
+  llenarTabla("tabla_final", res);
 
   document.getElementById("formularioInicial").classList.add("hidden");
   document.getElementById("resultados").classList.remove("hidden");

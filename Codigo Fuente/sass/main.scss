@@ -19,6 +19,34 @@
   transition: all 0.2s linear;
 }
 
+#tabla_final {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+  table-layout: auto; /* Asegura que las celdas y columnas se ajusten al contenido */
+}
+
+#tabla_final th,
+#tabla_final td {
+  padding: 10px;
+  text-align: center;
+  font-size: 1.4rem; /* Aumenta el tamaño de la fuente para mejorar la legibilidad */
+}
+
+#tabla_final tr {
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 10px;
+}
+
+#tabla_final th {
+  background-color: #4caf50;
+  color: white;
+}
+
+#tabla_final tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
 html {
   font-size: $font-size-default;
   overflow-x: hidden;
@@ -34,7 +62,6 @@ body {
   width: 100vw;
   font-family: Arial, sans-serif;
   background-color: $color-background-body;
-  padding: 20rem;
   line-height: 1.6;
   background-image: $fondo-cuerpo;
 }
