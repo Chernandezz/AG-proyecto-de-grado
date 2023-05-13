@@ -19,6 +19,7 @@ function ejecutarAlgoritmoGenetico() {
   const tamanoPoblacion = parseInt(
     document.getElementById("tamano_poblacion").value
   );
+  const convergencia = document.getElementById("convergencia").checked;
   const decimales = parseInt(document.getElementById("decimales").value);
   const tipoCruce = document.getElementById("tipo_cruce").value;
   const tipoMutacion = document.getElementById("tipo_mutacion").value;
@@ -46,6 +47,7 @@ function ejecutarAlgoritmoGenetico() {
     probabilidadCruce,
     probabilidadMutacion,
     numIteraciones,
+    convergencia,
     xmin,
     xmax,
     elitismo,

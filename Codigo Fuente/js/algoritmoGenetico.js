@@ -8,6 +8,7 @@ class AlgoritmoGenetico {
     probabilidadCruce,
     probabilidadMutacion,
     numIteraciones,
+    convergencia,
     xmin,
     xmax,
     elitismo,
@@ -26,6 +27,7 @@ class AlgoritmoGenetico {
     this.xmin = xmin;
     this.xmax = xmax;
     this.n = decimales;
+    this.convergencia = convergencia;
     this.Lind = Math.ceil(
       Math.log2(1 + (this.xmax - this.xmin) * Math.pow(10, this.n))
     );
@@ -349,6 +351,16 @@ class AlgoritmoGenetico {
     return fxTotal;
   }
 
+  verificarConvergencia() {
+    const fitnessInicial = this.poblacion[0].fitness;
+    for (let i = 1; i < this.tamanoPoblacion; i++) {
+      if (this.poblacion[i].fitness !== fitnessInicial) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   ejecutar() {
     console.log("Primera Iteracion");
     console.log([...this.poblacion]);
@@ -381,11 +393,16 @@ class AlgoritmoGenetico {
         cantidadHijos -= 2;
       }
       this.actualizarPoblacion(nuevaPoblacion);
+      if (this.convergencia) {
+        if (this.verificarConvergencia()) {
+          console.log(`Convergencia alcanzada en la iteración ${i + 1}`);
+          break;
+        }
+      }
     }
-    console.log("Ultima Iteracion");
+    console.log(`Ultima Iteracion ${this.numIteraciones}`);
     console.log([...this.poblacion]);
     console.log("Fitness Total: ", this.calculoFitnessTotal());
-    debugger;
   }
 }
 
@@ -419,6 +436,7 @@ export function algoritmoGenetico(
   probabilidadCruce,
   probabilidadMutacion,
   numIteraciones,
+  convergencia,
   xmin,
   xmax,
   elitismo,
@@ -433,6 +451,7 @@ export function algoritmoGenetico(
     probabilidadCruce,
     probabilidadMutacion,
     numIteraciones,
+    convergencia,
     xmin,
     xmax,
     elitismo,
