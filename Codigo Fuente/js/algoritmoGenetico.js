@@ -32,6 +32,9 @@ class AlgoritmoGenetico {
     this.elitismo = elitismo;
 
     this.poblacion = this.generarPoblacionInicial();
+    if (this.tipoSeleccion === "ruleta" && this.seDebeNormalizar()) {
+      this.normalizarPoblacion();
+    }
   }
 
   // Implementar el resto de las funciones aquí.
@@ -55,6 +58,7 @@ class AlgoritmoGenetico {
         this.xmin +
         (parseInt(individuo["binario"], 2) * (this.xmax - this.xmin)) /
           (Math.pow(2, this.Lind) - 1);
+      individuo["xi"] = xi;
       // Calcular el valor de fitness usando los valores de xi
       individuo["fitness"] = this.expresionFuncionObjetivo({ x: xi });
 
@@ -80,7 +84,6 @@ class AlgoritmoGenetico {
     let padre = null;
     switch (this.tipoSeleccion) {
       case "ruleta":
-        if (this.seDebeNormalizar()) this.normalizarPoblacion();
         padre = this.seleccionarPadreRuleta();
         break;
       case "universal":
@@ -107,12 +110,14 @@ class AlgoritmoGenetico {
 
   seleccionarPadreRuleta() {
     const r = Math.random();
+    const padre = {};
     for (const individuo of this.poblacion) {
       if (r <= individuo.probabilidadAcumulada) {
-        return individuo;
+        padre.cromosoma = [...individuo.cromosoma]; // Copiar el cromosoma en lugar de asignarlo directamente
+        break;
       }
     }
-    return this.poblacion[this.tamanoPoblacion - 1];
+    return padre;
   }
 
   seDebeNormalizar() {
@@ -154,6 +159,9 @@ class AlgoritmoGenetico {
   // Inicio Seccion de Cruces
   cruzar(padre1, padre2) {
     let hijos;
+    if (Math.random() > this.probabilidadCruce) {
+      return [padre1, padre2];
+    }
     switch (this.tipoCruce) {
       case "unPunto":
         hijos = this.cruzarUnPunto(padre1, padre2);
@@ -304,46 +312,86 @@ class AlgoritmoGenetico {
 
   // Actualizar la población
   actualizarPoblacion(nuevaPoblacion) {
-    this.poblacion = nuevaPoblacion;
     let fxTotal = 0;
 
-    for (const individuo of this.poblacion) {
+    for (const individuo of nuevaPoblacion) {
       individuo["binario"] = individuo.cromosoma.join("");
 
       const xi =
         this.xmin +
         (parseInt(individuo["binario"], 2) * (this.xmax - this.xmin)) /
           (Math.pow(2, this.Lind) - 1);
+      individuo["xi"] = xi;
+      // Calcular el valor de fitness usando los valores de xi
       individuo["fitness"] = this.expresionFuncionObjetivo({ x: xi });
 
       fxTotal += individuo["fitness"];
     }
 
     let probabilidadAcumulada = 0;
+    // Calcular la probabilidad de cada individuo
     for (let i = 0; i < this.tamanoPoblacion; i++) {
-      this.poblacion[i]["probabilidad"] =
-        this.poblacion[i]["fitness"] / fxTotal;
-      this.poblacion[i]["probabilidadAcumulada"] =
-        probabilidadAcumulada + this.poblacion[i]["probabilidad"];
-      probabilidadAcumulada = this.poblacion[i]["probabilidadAcumulada"];
+      nuevaPoblacion[i]["probabilidad"] =
+        nuevaPoblacion[i]["fitness"] / fxTotal;
+      // Calcular la probabilidad acumulada de cada individuo
+      nuevaPoblacion[i]["probabilidadAcumulada"] =
+        probabilidadAcumulada + nuevaPoblacion[i]["probabilidad"];
+      probabilidadAcumulada = nuevaPoblacion[i]["probabilidadAcumulada"];
     }
+    this.poblacion = [...nuevaPoblacion];
+  }
+
+  calculoFitnessTotal() {
+    let fxTotal = 0;
+    for (const individuo of this.poblacion) {
+      fxTotal += individuo["fitness"];
+    }
+    return fxTotal;
+  }
+
+  ejecutar() {
+    console.log("Primera Iteracion");
+    console.log([...this.poblacion]);
+    console.log("Fitness Total: ", this.calculoFitnessTotal());
+    for (let i = 0; i < this.numIteraciones; i++) {
+      const nuevaPoblacion = [];
+      let cantidadHijos = this.tamanoPoblacion;
+
+      if (this.elitismo) {
+        const mejorIndividuo = this.poblacion.reduce((mejor, individuo) => {
+          return individuo.fitness > mejor.fitness ? individuo : mejor;
+        });
+        nuevaPoblacion.push(mejorIndividuo);
+        cantidadHijos--;
+      }
+      // Ciclo para llenar la nueva tabla
+      while (cantidadHijos > 0) {
+        const padre1 = this.seleccionarPadre();
+        const padre2 = this.seleccionarPadre();
+        const [hijo1, hijo2] = this.cruzar(padre1, padre2);
+        const hijo1Mutado = this.mutar(hijo1);
+        const hijo2Mutado = this.mutar(hijo2);
+        if (cantidadHijos === 1) {
+          nuevaPoblacion.push(hijo1Mutado);
+          cantidadHijos--;
+          break;
+        }
+        nuevaPoblacion.push(hijo1Mutado);
+        nuevaPoblacion.push(hijo2Mutado);
+        cantidadHijos -= 2;
+      }
+      this.actualizarPoblacion(nuevaPoblacion);
+    }
+    console.log("Ultima Iteracion");
+    console.log([...this.poblacion]);
+    console.log("Fitness Total: ", this.calculoFitnessTotal());
+    debugger;
   }
 }
 
-function mostrarPoblacion(poblacion) {
-  console.log("Población:");
-  poblacion.forEach((individuo, index) => {
-    console.log(
-      `Individuo ${index + 1}: \n` +
-        `Cromosoma: ${individuo.cromosoma.join("")}\n` +
-        `Fitness: ${individuo.fitness.toFixed(4)}\n` +
-        `Fx: ${individuo.fx}\n` +
-        `Probabilidad: ${(individuo.probabilidad * 100).toFixed(2)}%\n` +
-        `Probabilidad acumulada: ${(
-          individuo.probabilidadAcumulada * 100
-        ).toFixed(2)}%`
-    );
-  });
+function showObjectCopy(obj) {
+  const objCopy = JSON.parse(JSON.stringify(obj));
+  console.log(objCopy);
 }
 
 function crearFuncionObjetivo(expresion) {
@@ -391,28 +439,5 @@ export function algoritmoGenetico(
     decimales,
   });
 
-  const nuevaPoblacion = [];
-
-  let cantidadHijos = algoritmo.tamanoPoblacion;
-  if (algoritmo.elitismo) {
-    const mejorIndividuo = algoritmo.poblacion.reduce((mejor, individuo) => {
-      return individuo.fitness > mejor.fitness ? individuo : mejor;
-    });
-    nuevaPoblacion.push(mejorIndividuo);
-    cantidadHijos--;
-  }
-
-  // Ciclo para llenar la nueva tabla
-  for (let j = 0; j < cantidadHijos; j++) {
-    const padre1 = algoritmo.seleccionarPadre();
-    const padre2 = algoritmo.seleccionarPadre();
-    const [hijo1, hijo2] = algoritmo.cruzar(padre1, padre2);
-    const hijo1Mutado = algoritmo.mutar(hijo1);
-    const hijo2Mutado = algoritmo.mutar(hijo2);
-    nuevaPoblacion.push(hijo1Mutado);
-    nuevaPoblacion.push(hijo2Mutado);
-  }
-  console.log("totalFitnes Pob:", calculoTotalFitness(algoritmo.poblacion));
-  algoritmo.actualizarPoblacion(nuevaPoblacion);
-  console.log("totalFitnes Pob:", calculoTotalFitness(algoritmo.poblacion));
+  let algoritmoFinalizado = algoritmo.ejecutar();
 }
