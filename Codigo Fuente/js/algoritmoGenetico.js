@@ -364,15 +364,15 @@ class AlgoritmoGenetico {
   limitarDecimales() {
     let copiaPoblacion = JSON.parse(JSON.stringify(this.poblacion));
     for (let i = 0; i < this.tamanoPoblacion; i++) {
-      copiaPoblacion[i].xi = parseFloat(copiaPoblacion[i].xi.toFixed(this.n));
+      copiaPoblacion[i].xi = parseFloat(copiaPoblacion[i].xi.toFixed(2));
       copiaPoblacion[i].fitness = parseFloat(
-        copiaPoblacion[i].fitness.toFixed(this.n)
+        copiaPoblacion[i].fitness.toFixed(2)
       );
       copiaPoblacion[i].probabilidad = parseFloat(
-        copiaPoblacion[i].probabilidad.toFixed(this.n)
+        copiaPoblacion[i].probabilidad.toFixed(2)
       );
       copiaPoblacion[i].probabilidadAcumulada = parseFloat(
-        copiaPoblacion[i].probabilidadAcumulada.toFixed(this.n)
+        copiaPoblacion[i].probabilidadAcumulada.toFixed(2)
       );
     }
     return copiaPoblacion;
