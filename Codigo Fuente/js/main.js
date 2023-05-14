@@ -1,4 +1,5 @@
 import { algoritmoGenetico } from "./algoritmoGenetico.js";
+const tablaPadre = document.getElementById("tablas");
 
 document
   .getElementById("btnEjecutarAlgoritmo")
@@ -11,16 +12,22 @@ document.getElementById("nuevoAlgoritmo").addEventListener("click", () => {
   document.getElementById("formularioInicial").classList.remove("hidden");
 });
 
-function llenarTabla(idTabla, datos) {
-  console.log(datos);
-  const tabla = document.getElementById(idTabla);
+function llenarTabla(nomTabla, datos, fitness) {
+  const divTabla = document.createElement("div");
+  const titulo = document.createElement("h2");
+  titulo.innerHTML = nomTabla;
+  const fitnessTabla = document.createElement("h3");
+  fitnessTabla.innerHTML = `Fitness: ${fitness}`;
+  const tabla = document.createElement("table");
+  tabla.classList.add("tabla");
+
   tabla.innerHTML = `<tr>
           <th>Cromosoma</th>
           <th>Binario</th>
           <th>Xi</th>
           <th>Fitness</th>
           <th>Probabilidad</th>
-          <th>Probabilidad Acumulada</th>
+          <th>Prob. Acumulada</th>
         </tr>`;
   for (let i = 0; i < datos.length; i++) {
     let row = `<tr>
@@ -33,6 +40,10 @@ function llenarTabla(idTabla, datos) {
                       </tr>`;
     tabla.innerHTML += row;
   }
+  divTabla.appendChild(titulo);
+  divTabla.appendChild(tabla);
+  divTabla.appendChild(fitnessTabla);
+  tablaPadre.appendChild(divTabla);
 }
 
 function ejecutarAlgoritmoGenetico() {
@@ -79,8 +90,10 @@ function ejecutarAlgoritmoGenetico() {
     decimales
   );
 
+  tablaPadre.innerHTML = "";
+  llenarTabla("Tabla Inicial", res["tablaInicial"], res["fitnessInicial"]);
   // Se llena la tabla con los resultados
-  llenarTabla("tabla_final", res);
+  llenarTabla("Tabla Final", res["tablaFinal"], res["fitnessFinal"]);
 
   document.getElementById("formularioInicial").classList.add("hidden");
   document.getElementById("resultados").classList.remove("hidden");

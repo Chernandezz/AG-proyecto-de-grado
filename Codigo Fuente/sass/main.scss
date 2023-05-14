@@ -19,31 +19,31 @@
   transition: all 0.2s linear;
 }
 
-#tabla_final {
+.tabla {
   width: 100%;
   margin-top: 20px;
   border-collapse: collapse;
   table-layout: auto; /* Asegura que las celdas y columnas se ajusten al contenido */
 }
 
-#tabla_final th,
-#tabla_final td {
+.tabla th,
+.tabla td {
   padding: 10px;
   text-align: center;
   font-size: 1.4rem; /* Aumenta el tamaño de la fuente para mejorar la legibilidad */
 }
 
-#tabla_final tr {
+.tabla tr {
   border-bottom: 1px solid #ccc;
   margin-bottom: 10px;
 }
 
-#tabla_final th {
+.tabla th {
   background-color: #4caf50;
   color: white;
 }
 
-#tabla_final tr:nth-child(even) {
+.tabla tr:nth-child(even) {
   background-color: #f2f2f2;
 }
 
@@ -156,23 +156,6 @@ body {
 
 .resultados {
   margin-top: 20px;
-}
-
-.tabla-resultados {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.tabla-resultados th,
-.tabla-resultados td {
-  border: 1px solid $color-border-bottom;
-  padding: 8px;
-  text-align: left;
-}
-
-.tabla-resultados th {
-  background-color: #f2f2f2;
-  font-weight: bold;
 }
 
 @media (max-width: $breakpoint-medium) {

@@ -361,16 +361,26 @@ class AlgoritmoGenetico {
     return true;
   }
 
-  limitarDecimales(){
+  limitarDecimales() {
+    let copiaPoblacion = JSON.parse(JSON.stringify(this.poblacion));
     for (let i = 0; i < this.tamanoPoblacion; i++) {
-      this.poblacion[i].xi = this.poblacion[i].xi.toFixed(2);
-      this.poblacion[i].fitness = this.poblacion[i].fitness.toFixed(2);
-      this.poblacion[i].probabilidad = this.poblacion[i].probabilidad.toFixed(2);
-      this.poblacion[i].probabilidadAcumulada = this.poblacion[i].probabilidadAcumulada.toFixed(2);
+      copiaPoblacion[i].xi = parseFloat(copiaPoblacion[i].xi.toFixed(this.n));
+      copiaPoblacion[i].fitness = parseFloat(
+        copiaPoblacion[i].fitness.toFixed(this.n)
+      );
+      copiaPoblacion[i].probabilidad = parseFloat(
+        copiaPoblacion[i].probabilidad.toFixed(this.n)
+      );
+      copiaPoblacion[i].probabilidadAcumulada = parseFloat(
+        copiaPoblacion[i].probabilidadAcumulada.toFixed(this.n)
+      );
     }
+    return copiaPoblacion;
   }
 
   ejecutar() {
+    let tablaInicial = this.limitarDecimales();
+    let fitnessInicial = this.calculoFitnessTotal();
     for (let i = 0; i < this.numIteraciones; i++) {
       const nuevaPoblacion = [];
       let cantidadHijos = this.tamanoPoblacion;
@@ -406,8 +416,12 @@ class AlgoritmoGenetico {
         }
       }
     }
-    this.limitarDecimales();
-    return [...this.poblacion];
+    return {
+      tablaInicial: tablaInicial,
+      fitnessInicial: fitnessInicial,
+      tablaFinal: this.limitarDecimales(),
+      fitnessFinal: this.calculoFitnessTotal(),
+    };
   }
 }
 
