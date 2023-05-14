@@ -1,0 +1,52 @@
+.tabla {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+  table-layout: auto; /* Asegura que las celdas y columnas se ajusten al contenido */
+}
+
+.tabla th,
+.tabla td {
+  padding: 10px;
+  text-align: center;
+  font-size: 1.4rem; /* Aumenta el tamaño de la fuente para mejorar la legibilidad */
+}
+
+.tabla tr {
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 10px;
+}
+
+.tabla th {
+  background-color: #4caf50;
+  color: white;
+}
+
+.tabla tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#tablas {
+  display: flex;
+  gap: 3rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.tituloTabla {
+  text-align: center;
+  font-size: 2rem;
+}
+.fitnessTabla {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 2rem;
+}
+
+// Seccion Botones
+.botones {
+  margin-bottom: 3rem;
+  display: flex;
+  justify-content: flex-start;
+  gap: 3rem;
+}

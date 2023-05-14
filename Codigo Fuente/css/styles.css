@@ -310,17 +310,6 @@ template {
   display: none;
 }
 
-* {
-  font-family: "Poppins", sans-serif;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  text-decoration: none;
-  outline: none;
-  border: none;
-  transition: all 0.2s linear;
-}
-
 .tabla {
   width: 100%;
   margin-top: 20px;
@@ -349,6 +338,42 @@ template {
   background-color: #f2f2f2;
 }
 
+#tablas {
+  display: flex;
+  gap: 3rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.tituloTabla {
+  text-align: center;
+  font-size: 2rem;
+}
+
+.fitnessTabla {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 2rem;
+}
+
+.botones {
+  margin-bottom: 3rem;
+  display: flex;
+  justify-content: flex-start;
+  gap: 3rem;
+}
+
+* {
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+  outline: none;
+  border: none;
+  transition: all 0.2s linear;
+}
+
 html {
   font-size: 62.5%;
   overflow-x: hidden;
@@ -360,7 +385,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  min-height: 100vh;
   width: 100vw;
   font-family: Arial, sans-serif;
   background-color: #54b1de;
@@ -369,7 +394,7 @@ body {
 }
 
 .container {
-  padding: 4rem;
+  padding: 3rem 4rem;
   background-color: rgba(255, 255, 255, 0.911);
   border-radius: 5px;
   max-width: 90rem;

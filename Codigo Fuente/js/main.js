@@ -14,10 +14,14 @@ document.getElementById("nuevoAlgoritmo").addEventListener("click", () => {
 
 function llenarTabla(nomTabla, datos, fitness) {
   const divTabla = document.createElement("div");
+  divTabla.classList.add("divTabla");
+  divTabla.classList.add("container");
   const titulo = document.createElement("h2");
   titulo.innerHTML = nomTabla;
+  titulo.classList.add("tituloTabla");
   const fitnessTabla = document.createElement("h3");
   fitnessTabla.innerHTML = `Fitness: ${fitness}`;
+  fitnessTabla.classList.add("fitnessTabla");
   const tabla = document.createElement("table");
   tabla.classList.add("tabla");
 
@@ -41,8 +45,8 @@ function llenarTabla(nomTabla, datos, fitness) {
     tabla.innerHTML += row;
   }
   divTabla.appendChild(titulo);
-  divTabla.appendChild(tabla);
   divTabla.appendChild(fitnessTabla);
+  divTabla.appendChild(tabla);
   tablaPadre.appendChild(divTabla);
 }
 
@@ -91,9 +95,13 @@ function ejecutarAlgoritmoGenetico() {
   );
 
   tablaPadre.innerHTML = "";
-  llenarTabla("Tabla Inicial", res["tablaInicial"], res["fitnessInicial"]);
+  llenarTabla(
+    "Tabla Inicial",
+    res["tablaInicial"],
+    res["fitnessInicial"].toFixed(2)
+  );
   // Se llena la tabla con los resultados
-  llenarTabla("Tabla Final", res["tablaFinal"], res["fitnessFinal"]);
+  llenarTabla("Tabla Final", res["tablaFinal"], res["fitnessFinal"].toFixed(2));
 
   document.getElementById("formularioInicial").classList.add("hidden");
   document.getElementById("resultados").classList.remove("hidden");
