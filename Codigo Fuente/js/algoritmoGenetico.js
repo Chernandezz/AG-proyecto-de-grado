@@ -34,6 +34,8 @@ class AlgoritmoGenetico {
     this.elitismo = elitismo;
 
     this.poblacion = this.generarPoblacionInicial();
+    this.actualizarProbabilidades(this.poblacion);
+
     if (this.tipoSeleccion === "ruleta" && this.seDebeNormalizar()) {
       this.normalizarPoblacion();
     }
@@ -69,17 +71,24 @@ class AlgoritmoGenetico {
       poblacionInicial.push(individuo);
     }
 
-    let probabilidadAcumulada = 0;
-    // Calcular la probabilidad de cada individuo
-    for (let i = 0; i < this.tamanoPoblacion; i++) {
-      poblacionInicial[i]["probabilidad"] =
-        poblacionInicial[i]["fitness"] / fxTotal;
-      // Calcular la probabilidad acumulada de cada individuo
-      poblacionInicial[i]["probabilidadAcumulada"] =
-        probabilidadAcumulada + poblacionInicial[i]["probabilidad"];
-      probabilidadAcumulada = poblacionInicial[i]["probabilidadAcumulada"];
-    }
+    this.actualizarProbabilidades(poblacionInicial);
+
     return poblacionInicial;
+  }
+
+  actualizarProbabilidades(poblacion) {
+    let probabilidadAcumulada = 0;
+    let fxTotal = poblacion.reduce(
+      (total, individuo) => total + individuo["fitness"],
+      0
+    );
+
+    for (let i = 0; i < this.tamanoPoblacion; i++) {
+      poblacion[i]["probabilidad"] = poblacion[i]["fitness"] / fxTotal;
+      poblacion[i]["probabilidadAcumulada"] =
+        probabilidadAcumulada + poblacion[i]["probabilidad"];
+      probabilidadAcumulada = poblacion[i]["probabilidadAcumulada"];
+    }
   }
 
   seleccionarPadre() {
