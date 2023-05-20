@@ -401,6 +401,15 @@ body {
   margin: 0 auto;
 }
 
+.contenedorGrafico {
+  height: 100%;
+  width: 70vw;
+}
+
+.grafico {
+  height: 60vh;
+}
+
 .titulo {
   text-align: center;
   margin: 0 0 5rem 0;

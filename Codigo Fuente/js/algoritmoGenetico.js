@@ -215,60 +215,6 @@ class AlgoritmoGenetico {
 
     return [hijo1, hijo2];
   }
-
-  // cruzarDosPuntos(padre1, padre2) {
-  //   let puntoCruce1 = Math.floor(Math.random() * this.Lind);
-  //   let puntoCruce2 = Math.floor(Math.random() * this.Lind);
-
-  //   while (puntoCruce1 === puntoCruce2) {
-  //     puntoCruce2 = Math.floor(Math.random() * this.Lind);
-  //   }
-
-  //   if (puntoCruce1 > puntoCruce2) {
-  //     [puntoCruce1, puntoCruce2] = [puntoCruce2, puntoCruce1];
-  //   }
-
-  //   const hijo1 = {
-  //     cromosoma: [],
-  //   };
-  //   const hijo2 = {
-  //     cromosoma: [],
-  //   };
-
-  //   for (let i = 0; i < this.Lind; i++) {
-  //     if (i < puntoCruce1 || i > puntoCruce2) {
-  //       hijo1.cromosoma.push(padre1.cromosoma[i]);
-  //       hijo2.cromosoma.push(padre2.cromosoma[i]);
-  //     } else {
-  //       hijo1.cromosoma.push(padre2.cromosoma[i]);
-  //       hijo2.cromosoma.push(padre1.cromosoma[i]);
-  //     }
-  //   }
-
-  //   return [hijo1, hijo2];
-  // }
-
-  // cruzarUniforme(padre1, padre2) {
-  //   const hijo1 = {
-  //     cromosoma: [],
-  //   };
-  //   const hijo2 = {
-  //     cromosoma: [],
-  //   };
-
-  //   for (let i = 0; i < this.Lind; i++) {
-  //     if (Math.random() < 0.5) {
-  //       hijo1.cromosoma.push(padre1.cromosoma[i]);
-  //       hijo2.cromosoma.push(padre2.cromosoma[i]);
-  //     } else {
-  //       hijo1.cromosoma.push(padre2.cromosoma[i]);
-  //       hijo2.cromosoma.push(padre1.cromosoma[i]);
-  //     }
-  //   }
-
-  //   return [hijo1, hijo2];
-  // }
-
   // Fin Seccion de Cruces
 
   // Inicio Seccion de Mutaciones
@@ -287,7 +233,6 @@ class AlgoritmoGenetico {
     return individuo;
   }
 
-  // Método de mutación bitflip
   // Método de mutación bitflip
   mutarBitflip(individuo) {
     // Crear una copia del objeto individuo antes de modificarlo
@@ -390,6 +335,7 @@ class AlgoritmoGenetico {
   ejecutar() {
     let tablaInicial = this.limitarDecimales();
     let fitnessInicial = this.calculoFitnessTotal();
+    let mejoresCromosomas = [];
     for (let i = 0; i < this.numIteraciones; i++) {
       const nuevaPoblacion = [];
       let cantidadHijos = this.tamanoPoblacion;
@@ -417,6 +363,12 @@ class AlgoritmoGenetico {
         nuevaPoblacion.push(hijo2Mutado);
         cantidadHijos -= 2;
       }
+      let mejorCromosoma = this.poblacion.reduce(
+        (mejor, cromosoma) =>
+          cromosoma.fitness > mejor.fitness ? cromosoma : mejor,
+        this.poblacion[0]
+      );
+      mejoresCromosomas.push(mejorCromosoma.fitness);
       this.actualizarPoblacion(nuevaPoblacion);
       if (this.convergencia) {
         if (this.verificarConvergencia()) {
@@ -430,6 +382,7 @@ class AlgoritmoGenetico {
       fitnessInicial: fitnessInicial,
       tablaFinal: this.limitarDecimales(),
       fitnessFinal: this.calculoFitnessTotal(),
+      mejoresCromosomas: mejoresCromosomas,
     };
   }
 }

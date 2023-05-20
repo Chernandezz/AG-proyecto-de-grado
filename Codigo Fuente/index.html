@@ -9,7 +9,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.js"
     integrity="sha512-VW8/i4IZkHxdD8OlqNdF7fGn3ba0+lYqag+Uy4cG6BtJ/LIr8t23s/vls70pQ41UasHH0tL57GQfKDApqc9izA=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
 
@@ -108,14 +108,31 @@
     <div class="botones">
       <button id="nuevoAlgoritmo" class="submit-btn" style="background-color: red !important;">Ejecutar Nuevo
         Algoritmo</button>
-      <button class="submit-btn" style="background-color: rgb(33, 153, 61) !important;">Ver Graficas</button>
+      <button id="btnVerGraficas" class="submit-btn" style="background-color: rgb(33, 153, 61) !important;">Ver
+        Graficas</button>
     </div>
 
     <div id="tablas">
 
     </div>
-
   </section>
+  <section id="grafico" class="grafico hidden">
+    <div class="botones">
+      <button id="btnVerTablas" class="submit-btn" style="background-color: rgb(33, 153, 61) !important;">Ver
+        Tablas</button>
+
+    </div>
+    <div class="container contenedorGrafico">
+
+      <canvas id="mejorIndividuoChart"></canvas>
+    </div>
+  </section>
+
+
+
+
+
+
 
   <script type="module" src="./js/main.js"></script>
 </body>

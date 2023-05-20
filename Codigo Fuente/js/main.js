@@ -1,6 +1,18 @@
 import { algoritmoGenetico } from "./algoritmoGenetico.js";
 const tablaPadre = document.getElementById("tablas");
 
+document.getElementById("btnVerGraficas").addEventListener("click", () => {
+  document.getElementById("grafico").classList.remove("hidden");
+  document.getElementById("resultados").classList.add("hidden");
+  document.getElementById("formularioInicial").classList.add("hidden");
+});
+
+document.getElementById("btnVerTablas").addEventListener("click", () => {
+  document.getElementById("grafico").classList.add("hidden");
+  document.getElementById("resultados").classList.remove("hidden");
+  document.getElementById("formularioInicial").classList.add("hidden");
+});
+
 document
   .getElementById("btnEjecutarAlgoritmo")
   .addEventListener("click", () => {
@@ -10,6 +22,7 @@ document
 document.getElementById("nuevoAlgoritmo").addEventListener("click", () => {
   document.getElementById("resultados").classList.add("hidden");
   document.getElementById("formularioInicial").classList.remove("hidden");
+  document.getElementById("grafico").classList.add("hidden");
 });
 
 function llenarTabla(nomTabla, datos, fitness) {
@@ -94,6 +107,8 @@ function ejecutarAlgoritmoGenetico() {
     decimales
   );
 
+  crearGraficoMejorIndividuo(res.mejoresCromosomas);
+
   tablaPadre.innerHTML = "";
   llenarTabla(
     "Tabla Inicial",
@@ -105,4 +120,51 @@ function ejecutarAlgoritmoGenetico() {
 
   document.getElementById("formularioInicial").classList.add("hidden");
   document.getElementById("resultados").classList.remove("hidden");
+}
+
+let chart = null; // Variable global para guardar la referencia al gráfico
+
+function crearGraficoMejorIndividuo(datos) {
+  let ctx = document.getElementById("mejorIndividuoChart").getContext("2d");
+
+  // Destruir el gráfico anterior si existe
+  if (chart !== null) {
+    chart.destroy();
+  }
+
+  chart = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: Array.from({ length: datos.length }, (_, i) => i + 1),
+      datasets: [
+        {
+          label: "Mejor Puntuación por Iteración",
+          data: datos,
+          borderColor: "#007bff",
+          fill: false,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: {
+          display: true,
+          title: {
+            display: true,
+            text: "Iteraciones",
+          },
+        },
+        y: {
+          display: true,
+          title: {
+            display: true,
+            text: "Mejor puntuación",
+          },
+          beginAtZero: true,
+        },
+      },
+    },
+  });
 }
