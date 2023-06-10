@@ -14,9 +14,15 @@ class AlgoritmoGenetico {
     elitismo,
     decimales,
   }) {
-    this.expresionFuncionObjetivo = crearFuncionObjetivo(
-      expresionFuncionObjetivo
-    );
+    this.expresionFuncionObjetivo = ((n) => {
+      const funcionObjetivo = crearFuncionObjetivo(expresionFuncionObjetivo);
+      return (params) => {
+        // Aquí puedes usar 'n' y será el valor que tenía en el momento de la creación de la función.
+        const resultado = funcionObjetivo(params);
+        return Number(resultado.toFixed(n));
+      };
+    })(this.n);
+
     this.tipoSeleccion = tipoSeleccion;
     this.tamanoPoblacion = tamanoPoblacion;
     this.tipoCruce = tipoCruce;
@@ -31,6 +37,7 @@ class AlgoritmoGenetico {
     this.Lind = Math.ceil(
       Math.log2(1 + (this.xmax - this.xmin) * Math.pow(10, this.n))
     );
+    console.log(this.Lind);
     this.elitismo = elitismo;
 
     this.poblacion = this.generarPoblacionInicial();

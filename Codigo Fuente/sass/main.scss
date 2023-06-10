@@ -115,6 +115,15 @@ body {
   height: 20px;
 }
 
+.grupoBtns {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 20px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
 .submit-btn {
   background-color: $color-background-button;
   color: $color-background-container;
@@ -123,7 +132,7 @@ body {
   letter-spacing: 0.1rem;
   cursor: pointer;
   margin-top: 10px;
-  padding: 12px 40px;
+  padding: 12px 30px;
   border-radius: 5px;
 }
 

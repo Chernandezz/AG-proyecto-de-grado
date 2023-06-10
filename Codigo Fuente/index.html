@@ -101,7 +101,16 @@
           </div>
         </div>
       </form>
-      <button type="submit" class="submit-btn" id="btnEjecutarAlgoritmo">Ejecutar algoritmo genético</button>
+      <div class="grupoBtns">
+        <div class="inputTituloag">
+          <label for="titulo_ejecucion" class="form-label">Título de la ejecución:</label>
+          <input type="text" id="titulo_ejecucion" class="form-input" placeholder="Ejemplo: AG 1">
+        </div>
+        <button type="button" class="submit-btn" style="background-color:indigo" id="btnAgregarAlgoritmo">Agregar a la
+          cola</button>
+        <button type="submit" class="submit-btn" id="btnEjecutarAlgoritmo">Ejecutar</button>
+      </div>
+
     </div>
   </section>
   <section id="resultados" class="hidden">
